@@ -3,33 +3,35 @@ import { useReducer } from "react";
 // import { useState } from "react";
 
 const Reduser = () => {
-  const [selected, setSelect] = useState(0);
   const [data, dispatch] = useReducer(
     (state, action) => {
       switch (action.type) {
-        case "select":
-          return { selected: action.payload };
         case "plus":
-          return { count: state.count + selected };
+          return { count: state.count + 1 };
         case "minus":
-          return { count: state.count - selected };
+          return { count: state.count - 1 };
+        case "byamount":
+          return { count: state.count + action.payload };
         default:
           return state;
       }
     },
     { count: 0 }
   );
-  console.log(selected);
+  const [amount, setAmount] = useState(5);
+  const onSelect = ({ target: { value } }) => {
+    setAmount(+value);
+  };
+
   return (
     <div style={{ margin: "50px 100px" }}>
       <h1>Count:{data.count}</h1>
       <button onClick={() => dispatch({ type: "plus" })}>+</button>
       <button onClick={() => dispatch({ type: "minus" })}>-</button>
-      <select
-        onChange={(e) =>
-          dispatch({ type: "select", payload: setSelect(+e.target.value) })
-        }
-      >
+      <button onClick={() => dispatch({ type: "byamount", payload: amount })}>
+        5
+      </button>
+      <select name="" id="" onChange={onSelect}>
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="15">15</option>
